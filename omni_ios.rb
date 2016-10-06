@@ -300,145 +300,145 @@ hf.write("</table></div>")
 #
 ###################################################################################
 
-hf.write("<p><p><a href='#top_of_page'>Back to Top</a><br><br>")
-
-for x in 0..omni_index-1 #Loop through each omniture call
-
-    if !omni_testname[x].nil? and omni_testname[x].length > 1
-        #puts "Testname length > 0:  #{omni_testname[x]}"
-        if module_cnt > 0
-            hf.write("</td></row></table>")
-        end
-        hf.write("<a name='#{omni_testname[x]}'></a>")
-        hf.write("<table style='width:100%'><tr><td class='begin_test_style'>" + omni_testname[x] + "</td></tr></table>") 
-        
-
-        hf.write("<a href='#top_of_page'>Back to Top</a><br><br>")  
-        module_cnt = 0
-  
-    elsif omni_url[x].include? "Beginning Omniture test:"
-        
-        #Check for a duplicate test
-        #puts "Calling duplicate function with #{omni_url[x]}"
-        #puts omni_url[x]
-        duplicate = check_duplicate(duplicate_array, duplicate_count, omni_url[x])
-        if !duplicate
-            duplicate_array[duplicate_count] = omni_url[x]
-            duplicate_count = duplicate_count + 1
-        end
-        #puts "Is this a duplicate? #{duplicate}"
-
-        if !duplicate
-            current_test = omni_url[x].slice(omni_url[x].index(":")+2,omni_url[x].length).strip
-            if module_cnt > 0
-                hf.write("</td></row></table>")
-            end
-            hf.write("<a name='#{omni_url[x].strip}'></a>")
-            hf.write("<table><tr class=omni_style><td>" + omni_url[x] + "</td></tr></table>") 
-
-            module_cnt = 0
-        end
-
-    elsif omni_url[x].include? "Ending Omniture test"
-        if !duplicate
-            current_test = ""
-            if module_cnt > 0
-                hf.write("</td></row></table>")
-            end
-
-            hf.write("<table><tr class=omni_style><td>" + omni_url[x] + "</td></tr></table><p><p><p>") 
-            module_cnt = 0
-        else
-            duplicate = false #reset duplicate value for next omniture test
-        end
-
-    elsif omni_url[x].include? "END_OF_TEST:"
-        if module_cnt > 0
-            hf.write("</td></row></table>")
-        end
-        hf.write("<p><p><a href='#top_of_page'>Back to Top</a>")
-        hf.write("<p class='end_test_style'>" + omni_url[x] + "</p><p><p><p><p>") 
-
-        module_cnt = 0
-    end
-
-
-    if !omni_url[x].nil? and omni_url[x].length > 0 and !duplicate
-
-        if !omni_url[x].nil? and !omni_url[x].include? "Omniture test:" and !omni_url[x].include? "END_OF_TEST:"
-
-            module_cnt = module_cnt + 1
-
-            case module_cnt
-                when 1
-                    hf.write("<table><tr class='outsidetable'><td class='outsidetable'>")
-                when 2
-                    hf.write("</td><td class='outsidetable'>")
-                when 3
-                    hf.write("</td><td class='outsidetable'>")
-                when 4
-                    hf.write("</td><td class='outsidetable'>") 
-                when 5
-                    hf.write("</td></tr></table><table><tr class='outsidetable'><td class='outsidetable'>")
-                    module_cnt = 0 
-            end     
-
-            #Write out the API call
-            #hf.write("<a href=""javascript:ReverseDisplay('myid" + id.to_s + "')"">Click to show/hide parameters</a>")
-            #hf.write("<div id='myid" + id.to_s + "' style='display:none;'><table " + omni_style + "><tr><td>" + omni_url[x] + "</td></tr></table></div>")
-            #id = id + 1  
-
-            ###################################
-            #
-            # Write out the Omniture parameters
-            #
-            ###################################
-
-            # Get the anchor tag test (A.ACTION or C.GNT.CONTENTTYPE)
-            anchor_text = ""
-            for y in 0..100   
-                if omni_data[x,y,0].nil? 
-                    break
-                elsif omni_data[x,y,0].upcase.include? "A.ACTION"
-                    anchor_text = "Action=" + omni_data[x,y,1]
-                    break
-                elsif omni_data[x,y,0].upcase.include? "C.GNT.CONTENTTYPE"
-                    anchor_text = "ContentType=" + omni_data[x,y,1]
-                    break
-                end
-            end
-            if anchor_text.length == 0
-                anchor_text = "Omniture call " + div_counter.to_s
-            end
-
-            # Write the hyperlink for the Omniture call
-            hf.write("<a href=""javascript:ReverseDisplay('myid" + div_counter.to_s + "')"">" + anchor_text + "</a>")
-            hf.write("<div id='myid" + div_counter.to_s + "' style='display:none;'>")
-            hf.write ("<table><tr class=hovertable_header><td>Omniture Parameter</td><td>Value</td></row>")
-            for y in 0..100   
-                if omni_data[x,y,0].nil? 
-                    break
-                else    
-
-                    # Validate the property
-                    valid = biz_validate($biz,current_test,omni_data[x,y,0],omni_data[x,y,1])
-                    if valid #this is good
-                        tmp = "hovertable"
-                    else #this is bad
-                        tmp = "hovertable_bad"
-                    end
-                    hf.write("<tr class=" + tmp + ">")
-
-                    hf.write("<td>"+omni_data[x,y,0]+"</td>")
-                    hf.write("<td>"+omni_data[x,y,1]+"</td>")
-                    hf.write("</tr>")
-                end
-            end
-            hf.write("</table></div>")
-            div_counter = div_counter + 1
-        end
-    end
-end
+# hf.write("<p><p><a href='#top_of_page'>Back to Top</a><br><br>")
+#
+# for x in 0..omni_index-1 #Loop through each omniture call
+#
+#     if !omni_testname[x].nil? and omni_testname[x].length > 1
+#         #puts "Testname length > 0:  #{omni_testname[x]}"
+#         if module_cnt > 0
+#             hf.write("</td></row></table>")
+#         end
+#         hf.write("<a name='#{omni_testname[x]}'></a>")
+#         hf.write("<table style='width:100%'><tr><td class='begin_test_style'>" + omni_testname[x] + "</td></tr></table>")
+#
+#
+#         hf.write("<a href='#top_of_page'>Back to Top</a><br><br>")
+#         module_cnt = 0
+#
+#     elsif omni_url[x].include? "Beginning Omniture test:"
+#
+#         #Check for a duplicate test
+#         #puts "Calling duplicate function with #{omni_url[x]}"
+#         #puts omni_url[x]
+#         duplicate = check_duplicate(duplicate_array, duplicate_count, omni_url[x])
+#         if !duplicate
+#             duplicate_array[duplicate_count] = omni_url[x]
+#             duplicate_count = duplicate_count + 1
+#         end
+#         #puts "Is this a duplicate? #{duplicate}"
+#
+#         if !duplicate
+#             current_test = omni_url[x].slice(omni_url[x].index(":")+2,omni_url[x].length).strip
+#             if module_cnt > 0
+#                 hf.write("</td></row></table>")
+#             end
+#             hf.write("<a name='#{omni_url[x].strip}'></a>")
+#             hf.write("<table><tr class=omni_style><td>" + omni_url[x] + "</td></tr></table>")
+#
+#             module_cnt = 0
+#         end
+#
+#     elsif omni_url[x].include? "Ending Omniture test"
+#         if !duplicate
+#             current_test = ""
+#             if module_cnt > 0
+#                 hf.write("</td></row></table>")
+#             end
+#
+#             hf.write("<table><tr class=omni_style><td>" + omni_url[x] + "</td></tr></table><p><p><p>")
+#             module_cnt = 0
+#         else
+#             duplicate = false #reset duplicate value for next omniture test
+#         end
+#
+#     elsif omni_url[x].include? "END_OF_TEST:"
+#         if module_cnt > 0
+#             hf.write("</td></row></table>")
+#         end
+#         hf.write("<p><p><a href='#top_of_page'>Back to Top</a>")
+#         hf.write("<p class='end_test_style'>" + omni_url[x] + "</p><p><p><p><p>")
+#
+#         module_cnt = 0
+#     end
+#
+#
+#     if !omni_url[x].nil? and omni_url[x].length > 0 and !duplicate
+#
+#         if !omni_url[x].nil? and !omni_url[x].include? "Omniture test:" and !omni_url[x].include? "END_OF_TEST:"
+#
+#             module_cnt = module_cnt + 1
+#
+#             case module_cnt
+#                 when 1
+#                     hf.write("<table><tr class='outsidetable'><td class='outsidetable'>")
+#                 when 2
+#                     hf.write("</td><td class='outsidetable'>")
+#                 when 3
+#                     hf.write("</td><td class='outsidetable'>")
+#                 when 4
+#                     hf.write("</td><td class='outsidetable'>")
+#                 when 5
+#                     hf.write("</td></tr></table><table><tr class='outsidetable'><td class='outsidetable'>")
+#                     module_cnt = 0
+#             end
+#
+#             #Write out the API call
+#             #hf.write("<a href=""javascript:ReverseDisplay('myid" + id.to_s + "')"">Click to show/hide parameters</a>")
+#             #hf.write("<div id='myid" + id.to_s + "' style='display:none;'><table " + omni_style + "><tr><td>" + omni_url[x] + "</td></tr></table></div>")
+#             #id = id + 1
+#
+#             ###################################
+#             #
+#             # Write out the Omniture parameters
+#             #
+#             ###################################
+#
+#             # Get the anchor tag test (A.ACTION or C.GNT.CONTENTTYPE)
+#             anchor_text = ""
+#             for y in 0..100
+#                 if omni_data[x,y,0].nil?
+#                     break
+#                 elsif omni_data[x,y,0].upcase.include? "A.ACTION"
+#                     anchor_text = "Action=" + omni_data[x,y,1]
+#                     break
+#                 elsif omni_data[x,y,0].upcase.include? "C.GNT.CONTENTTYPE"
+#                     anchor_text = "ContentType=" + omni_data[x,y,1]
+#                     break
+#                 end
+#             end
+#             if anchor_text.length == 0
+#                 anchor_text = "Omniture call " + div_counter.to_s
+#             end
+#
+#             # Write the hyperlink for the Omniture call
+#             hf.write("<a href=""javascript:ReverseDisplay('myid" + div_counter.to_s + "')"">" + anchor_text + "</a>")
+#             hf.write("<div id='myid" + div_counter.to_s + "' style='display:none;'>")
+#             hf.write ("<table><tr class=hovertable_header><td>Omniture Parameter</td><td>Value</td></row>")
+#             for y in 0..100
+#                 if omni_data[x,y,0].nil?
+#                     break
+#                 else
+#
+#                     # Validate the property
+#                     valid = biz_validate($biz,current_test,omni_data[x,y,0],omni_data[x,y,1])
+#                     if valid #this is good
+#                         tmp = "hovertable"
+#                     else #this is bad
+#                         tmp = "hovertable_bad"
+#                     end
+#                     hf.write("<tr class=" + tmp + ">")
+#
+#                     hf.write("<td>"+omni_data[x,y,0]+"</td>")
+#                     hf.write("<td>"+omni_data[x,y,1]+"</td>")
+#                     hf.write("</tr>")
+#                 end
+#             end
+#             hf.write("</table></div>")
+#             div_counter = div_counter + 1
+#         end
+#     end
+# end
 
 hf.write("<p></p><p></p><p></p>")
 hf.write("<table style=table90><tr class=comscore_style><td>COMSCORE</td><td>" + comscore + "</td></tr></table>")
