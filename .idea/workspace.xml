@@ -29,7 +29,7 @@
         <entry file="file://$PROJECT_DIR$/omni_ios.rb">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="241">
-              <caret line="174" column="13" selection-start-line="174" selection-start-column="13" selection-end-line="174" selection-end-column="13" />
+              <caret line="156" column="35" selection-start-line="156" selection-start-column="35" selection-end-line="156" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -337,12 +337,12 @@
       <option name="presentableId" value="Default" />
       <updated>1475082324911</updated>
       <workItem from="1475082326490" duration="20871000" />
-      <workItem from="1475174599586" duration="20171000" />
+      <workItem from="1475174599586" duration="20415000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="41042000" />
+    <option name="totallyTimeSpent" value="41286000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -515,7 +515,7 @@
     <entry file="file://$PROJECT_DIR$/omni_ios.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
-          <caret line="174" column="13" selection-start-line="174" selection-start-column="13" selection-end-line="174" selection-end-column="13" />
+          <caret line="156" column="35" selection-start-line="156" selection-start-column="35" selection-end-line="156" selection-end-column="35" />
           <folding />
         </state>
       </provider>
