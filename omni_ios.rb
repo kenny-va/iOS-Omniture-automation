@@ -151,7 +151,6 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
                  
                 elsif value.start_with? ("sz")
                     ad_data[ad_index][1] = URI.decode(value.slice(value.index("sz=")+3,value.length))
-
                 end                
             end
 
