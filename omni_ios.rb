@@ -436,13 +436,9 @@ for x in 0..omni_index-1 #Loop through each omniture call
             end
             hf.write("</table></div>")
             div_counter = div_counter + 1
-            
-        #else
-        #    puts "Strange omni_url value: #{omni_url[x]}"
         end
     end
-
-end 
+end
 
 hf.write("<p></p><p></p><p></p>")
 hf.write("<table style=table90><tr class=comscore_style><td>COMSCORE</td><td>" + comscore + "</td></tr></table>")
