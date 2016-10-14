@@ -39,7 +39,11 @@ def print_fronts(hf)
                     end
 
                     if is_unique
-                        hf.write("<tr>")
+                        if x % 2 == 0
+                            hf.write("<tr>")
+                        else
+                            hf.write("<tr style='background-color: lightgray'>")
+                        end
                         hf.write("<td>" + $fronts_array[x,0,0] + "</td>")   #test
                         hf.write("<td>" + $fronts_array[x,0,1] + "</td>")   #front
                         hf.write("<td>" + $fronts_array[x,y,0] + "</td>")   #field

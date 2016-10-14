@@ -22,7 +22,7 @@ if ARGV[0].nil?
 else
     filename = ARGV[0]
 end
-puts "Filename: " + filename
+puts "File name: " + filename
 
 product_name_style = "style='font-weight: bold;font-size: xx-large; background-color:green'"
 omni_style = "style='background-color: PaleGoldenRod; '"
@@ -38,18 +38,29 @@ ad_data = Array.new(1000) { Array.new(5) }   #array for ad calls.  1000 is upper
 ad_index = 0  #counter for ad call array
 
 omni_data = My3Array.new
-omni_testname = Array.new  #Stores the name of the automated test
+omni_test_name = Array.new  #Stores the name of the automated test
 omni_url = Array.new
 omni_url_index = 0
 current_test = ""   #Current test being processed
 specific_test = ""  #Specific test within the "current_test"
 comscore = "" # Store the comscore call
 
-#This is good for 10 testnames, 10 fronts, 20 fields
+#This is good for 100 test names, 100 fronts, 25 fields
 $test_count = 100
 $front_count = 100
 $field_count = 25
 $fronts_array = My3Array.new
+
+#3D ARRAY STRUCTURE
+# [0..n,0,0] = TEST NAME <A>
+# [0..n,0,1] = FRONT NAME
+# [0..n,1..n,0] = FIELD NAME  - All field names stored by incrementing 2nd index
+# [0..n,1..n,1] = VALUE       - Single value for the field name
+
+# [1..n,0.,n,0] = TEST NAME <B>
+# [1..n,0..n,1] = FRONT NAME
+# [1..n,1..n,0] = FIELD NAME
+# [1..n,1..n,1] = VALUE
 
 $actions_array = My3Array.new
 $actions_count = 50
@@ -100,10 +111,10 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
             j = line.index("TESTNAME:")  
 
             # This will strip off the text prior to and after the TEST NAME
-            omni_testname[omni_index] = line.slice(j+12,line.length-(j+12+2))
+            omni_test_name[omni_index] = line.slice(j+12,line.length-(j+12+2))
 
             in_test = true
-            current_test = omni_testname[omni_index]
+            current_test = omni_test_name[omni_index]
             module_cnt = 0
 
             omni_index = omni_index + 1
@@ -209,9 +220,9 @@ hf.write("<table style='width:100%'><tr><td><product_name_style>PRODUCT TESTED: 
 hf.write("<tr><td>Environment tested: #{environment_tested}</td></tr></table>")
 
 # for i in 0..omni_index - 1
-#     if !omni_testname[i].nil?
-#         if omni_testname[i].length > 0
-#             hf.write("<p><p><a href='./api-url-logfile/#{omni_testname[i]}'>Jump to #{omni_testname[i]}</a><br>")
+#     if !omni_test_name[i].nil?
+#         if omni_test_name[i].length > 0
+#             hf.write("<p><p><a href='./api-url-logfile/#{omni_test_name[i]}'>Jump to #{omni_test_name[i]}</a><br>")
 #         end
 #     end
 #     if !omni_url[i].nil?
@@ -304,13 +315,13 @@ hf.write("</table></div>")
 #
 # for x in 0..omni_index-1 #Loop through each omniture call
 #
-#     if !omni_testname[x].nil? and omni_testname[x].length > 1
-#         #puts "Testname length > 0:  #{omni_testname[x]}"
+#     if !omni_test_name[x].nil? and omni_test_name[x].length > 1
+#         #puts "Testname length > 0:  #{omni_test_name[x]}"
 #         if module_cnt > 0
 #             hf.write("</td></row></table>")
 #         end
-#         hf.write("<a name='#{omni_testname[x]}'></a>")
-#         hf.write("<table style='width:100%'><tr><td class='begin_test_style'>" + omni_testname[x] + "</td></tr></table>")
+#         hf.write("<a name='#{omni_test_name[x]}'></a>")
+#         hf.write("<table style='width:100%'><tr><td class='begin_test_style'>" + omni_test_name[x] + "</td></tr></table>")
 #
 #
 #         hf.write("<a href='#top_of_page'>Back to Top</a><br><br>")
