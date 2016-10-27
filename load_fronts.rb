@@ -25,7 +25,9 @@ def load_fronts(current_test,omni_call)
     end
 
     $fronts_array[test_idx,0,0] = current_test
-    $fronts_array[test_idx,0,1] = "empty"       #default "empty" for testing
+    if $fronts_array[test_idx,0,1].nil?
+        $fronts_array[test_idx,0,1] = "empty"       #default "empty" for testing
+    end
 
     omni_values.each do |value|
 
@@ -45,7 +47,7 @@ def load_fronts(current_test,omni_call)
                 col = 2
                 $fronts_array[test_idx,omni_row,0] = prefixes[0]+prefixes[1]+prefixes[2]+prefixes[4]+prefixes[5]+p_value.upcase
 
-                if p_value.include? "Section"
+                if p_value == "Section"
                     section_parameter = true    #signal that this property needs to be captured 
                 end
 

@@ -36,6 +36,7 @@ in_test = false #tracks if we are currently within a test when parsing the log
 
 ad_data = Array.new(1000) { Array.new(5) }   #array for ad calls.  1000 is upper bound.
 ad_index = 0  #counter for ad call array
+need_section_front = false  #used to flag the associated section front call for an action=FrontView
 
 omni_data = My3Array.new
 omni_test_name = Array.new  #Stores the name of the automated test
@@ -48,7 +49,7 @@ comscore = "" # Store the comscore call
 #This is good for 100 test names, 100 fronts, 25 fields
 $test_count = 100
 $front_count = 100
-$field_count = 25
+$field_count = 100
 $fronts_array = My3Array.new
 
 #3D ARRAY STRUCTURE
@@ -167,7 +168,7 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
 
             ad_index = ad_index + 1
 
-        elsif (line.include? "repdata.usatoday.com") and in_test and !line.include? "http://repdata.usatoday.com/id"  #only works for USAToday parsing
+        elsif (need_section_front and line.include? "gannett.demdex.net" ) or (line.include? "repdata.usatoday.com" and in_test and !line.include? "http://repdata.usatoday.com/id")  #only works for USAToday parsing
         #elsif (line.include? "gannett.demdex.net" or line.include? "repdata.usatoday.com") and in_test  #REMOVE DEMDEX CALLS
      
             if line.include? "gannett.demdex.net" 
@@ -183,10 +184,16 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
             end
 
             #
-            #Load up the FRONTS array
+            #Load up the FRONTS array and associated section front call
             #
-            if omni_url[omni_index].include? "action=Front" and specific_test.length > 0
+            if need_section_front or (omni_url[omni_index].include? "action=Front View" and specific_test.length > 0)
                 rc = load_fronts(specific_test,omni_call)
+
+                if need_section_front
+                    need_section_front = false
+                else
+                    need_section_front = true #true
+                end
             end
 
             #USER ACTIONS

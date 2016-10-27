@@ -17,7 +17,11 @@ def load_content_types(current_test,omni_call)
         end
     end
 
-    $content_type_array[test_idx,0,0] = current_test
+    if current_test == ""
+        $content_type_array[test_idx,0,0] = "OUTSIDE OF TEST SCOPE"
+    else
+        $content_type_array[test_idx,0,0] = current_test
+    end
     $content_type_array[test_idx,0,1] = "empty"       #default "empty" for testing
 
     omni_row = 1
@@ -38,12 +42,12 @@ def load_content_types(current_test,omni_call)
             elsif col == 1   #Parameter name
                 col = 2
 
-                if p_value == "ContentType"
+                if p_value.include? "ContentType"
                     $content_type_array[test_idx,omni_row,0] = prefixes[0]+prefixes[1]+prefixes[2]+prefixes[4]+prefixes[5]+p_value.upcase
                     include_action = true
                 end
 
-                if p_value.include? "Section"
+                if p_value == "Section"
                     section_parameter = true    #signal that this property needs to be captured
                 end
 

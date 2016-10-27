@@ -23,7 +23,8 @@ def print_content_types(hf)
                         if !$content_type_array[i,0,0].nil?
                             #puts $content_type_array[i,0,0] + "|" + $content_type_array[i,0,1] + "|" + $content_type_array[i,1,0]+ "|" + $content_type_array[i,1,1]
 
-                            if $content_type_array[x,0,0] == $content_type_array[i,0,0] and  $content_type_array[x,0,1] == $content_type_array[i,0,1] and  $content_type_array[x,1,0] == $content_type_array[i,1,0] and  $content_type_array[x,1,1] == $content_type_array[i,1,1]
+                            #if $content_type_array[x,0,0] == $content_type_array[i,0,0] and  $content_type_array[x,0,1] == $content_type_array[i,0,1] and  $content_type_array[x,1,0] == $content_type_array[i,1,0] and  $content_type_array[x,1,1] == $content_type_array[i,1,1]
+                            if $content_type_array[x,1,1] == $content_type_array[i,1,1]  # only show unique parameter values
                                 is_unique = false
                                 break
                             end
@@ -35,7 +36,7 @@ def print_content_types(hf)
         end
 
         if is_unique and !$content_type_array[x,0,0].nil?
-            puts $content_type_array[x,0,0], $content_type_array[x,1,0], $content_type_array[x,1,1]
+            puts x,$content_type_array[x,0,0], $content_type_array[x,1,0], $content_type_array[x,1,1]
             hf.write("<tr>")
             hf.write("<td>" + $content_type_array[x,0,0] + "</td>")   #test
             hf.write("<td>" + $content_type_array[x,0,1] + "</td>")   #front
