@@ -17,16 +17,6 @@ def load_actions(current_test,omni_call)
         end
     end
 
-    # #begin where the last entry was added to this test
-    # if test_idx == -1   #this means the test is new so get the next available slot
-    #     (0..$actions_count).each do |x|
-    #         if $actions_array[x,0,0].nil?
-    #             test_idx = x
-    #             break
-    #         end
-    #     end
-    # end
-
     $actions_array[test_idx,0,0] = current_test
     $actions_array[test_idx,0,1] = "empty"       #default "empty" for testing
 

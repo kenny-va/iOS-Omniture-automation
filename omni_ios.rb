@@ -169,7 +169,6 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
             ad_index = ad_index + 1
 
         elsif (need_section_front and line.include? "gannett.demdex.net" ) or (line.include? "repdata.usatoday.com" and in_test and !line.include? "http://repdata.usatoday.com/id")  #only works for USAToday parsing
-        #elsif (line.include? "gannett.demdex.net" or line.include? "repdata.usatoday.com") and in_test  #REMOVE DEMDEX CALLS
      
             if line.include? "gannett.demdex.net" 
                 omni_call = URI.decode(line.slice(line.index("gannett.demdex.net/event?"),line.length))
@@ -187,13 +186,16 @@ File.open(filename) do |f|       #LOOP THROUGH THE FILE TO PROCESS SPECIFIC LINE
             #Load up the FRONTS array and associated section front call
             #
             if need_section_front or (omni_url[omni_index].include? "action=Front View" and specific_test.length > 0)
-                rc = load_fronts(specific_test,omni_call)
 
                 if need_section_front
                     need_section_front = false
+                    specific_test = specific_test + " / Content"
                 else
                     need_section_front = true #true
                 end
+
+                rc = load_fronts(specific_test,omni_call)
+
             end
 
             #USER ACTIONS
