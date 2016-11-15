@@ -2,9 +2,9 @@
 def load_fronts(current_test,omni_call)
 
     prefix_cnt = 0
-    prefixes = ["","","","","",""] #this array holds the prefixes, ie: c.a.DeviceName
+    prefixes = ['','','','','',''] #this array holds the prefixes, ie: c.a.DeviceName
     omni_row = 1
-    omni_values = omni_call.split("&")  #Split all the URL parameters
+    omni_values = omni_call.split('&')  #Split all the URL parameters
     test_idx = -1
     section_parameter = false
 
@@ -26,28 +26,28 @@ def load_fronts(current_test,omni_call)
 
     $fronts_array[test_idx,0,0] = current_test
     if $fronts_array[test_idx,0,1].nil?
-        $fronts_array[test_idx,0,1] = "empty"       #default "empty" for testing
+        $fronts_array[test_idx,0,1] = 'empty'       #default 'empty' for testing
     end
 
     omni_values.each do |value|
 
-        param = value.split("=")
+        param = value.split('=')
         col = 1
         param.each do |p_value|
             
-            if p_value.slice(-1,1) == "." #we have a prefix
+            if p_value.slice(-1,1) == '.' #we have a prefix
                 prefixes[prefix_cnt] = p_value
                 prefix_cnt = prefix_cnt + 1
 
-            elsif p_value.slice(0,1) == "."  #we have a suffix
-                prefixes[prefix_cnt-1] = ""
+            elsif p_value.slice(0,1) == '.'  #we have a suffix
+                prefixes[prefix_cnt-1] = ''
                 prefix_cnt = prefix_cnt - 1
                 
             elsif col == 1   #Parameter name
                 col = 2
                 $fronts_array[test_idx,omni_row,0] = prefixes[0]+prefixes[1]+prefixes[2]+prefixes[4]+prefixes[5]+p_value.upcase
 
-                if p_value == "Section"
+                if p_value == 'Section'
                     section_parameter = true    #signal that this property needs to be captured 
                 end
 
